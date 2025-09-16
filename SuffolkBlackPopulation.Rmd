@@ -1,0 +1,165 @@
+---
+title: "Suffolk Black Population"
+author: "Jahmere Jackson"
+date: "2025-09-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup, include=FALSE}
+# install packages
+#install.packages("tidycensus")
+#install.packages("tidyverse")
+#install.packages("mapview")
+#install.packages("mapgl")
+#install.packages("quarto")
+#install.packages("viridis")
+library(tidycensus)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(viridis)
+library(mapview)
+```
+
+```{r, messages=FALSE, warning=FALSE}
+
+ny_black_population_unemployment_sf = get_acs(
+  geography = "county",
+  variables = c("B02001_003","C18120_006"), # income variable
+  state = "NY",
+  year = 2023,
+  geometry = T
+)
+
+```
+
+```{r, messages=FALSE, warning=FALSE}
+
+ny_unemployment_sf = get_acs(
+  geography = "county",
+  variables = "C18120_006", # income variable
+  state = "NY",
+  year = 2023,
+  geometry = T
+)
+
+```
+
+```{r, messages=FALSE, warning=FALSE}
+
+ny_black_population_sf = get_acs(
+  geography = "county",
+  variables = "B02001_003", # income variable
+  state = "NY",
+  year = 2023,
+  geometry = T
+)
+
+```
+
+```{r, messages=FALSE, warning=FALSE}
+plot(ny_black_population_unemployment_sf['estimate'])
+
+```
+
+```{r, messages=FALSE, warning=FALSE}
+plot(ny_black_population_sf['estimate'])
+
+```
+
+```{r, messages=FALSE, warning=FALSE}
+
+ny_suffolk_black_population_unemployment_sf = get_acs(
+  geography = "tract",
+  county = "Suffolk",
+  variables = c("B02001_003","C18120_006"), # income variable
+  state = "NY",
+  year = 2023,
+  geometry = T
+)
+
+```
+
+```{r, messages=FALSE, warning=FALSE}
+
+ny_suffolk_black_population_sf = get_acs(
+  geography = "tract",
+  county = "Suffolk",
+  variables = "B02001_003", # income variable
+  state = "NY",
+  year = 2023,
+  geometry = T
+)
+
+```
+
+```{r, messages=FALSE, warning=FALSE}
+ggplot(ny_suffolk_black_population_unemployment_sf) +
+  geom_sf(aes(fill = estimate), color = "white", size = 0.1) +
+  scale_fill_viridis(option = "magma", name = "Black Population and Unemployment in Suffolk County") +
+  labs(
+    title = "Black Population in Suffolk County NY",
+    caption = "Data: American Community Survey 5-Year Estimates"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    axis.title = element_blank(),
+    legend.position = "right"
+  )
+```
+
+```{r, messages=FALSE, warning=FALSE}
+ggplot(ny_suffolk_black_population_sf) +
+  geom_sf(aes(fill = estimate), color = "white", size = 0.1) +
+  scale_fill_viridis(option = "magma", name = "Black Population in Suffolk County") +
+  labs(
+    title = "Black Population in Suffolk County NY",
+    caption = "Data: American Community Survey 5-Year Estimates"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    axis.title = element_blank(),
+    legend.position = "right"
+  )
+```
+
+```{r, messages=FALSE, warning=False}
+ny_suffolk_black_population_unemployment_sf <- get_acs(
+  geography = "county",
+  state = "NY",
+  county = "Suffolk",
+  variables = c("B02001_003", "C18120_006"),
+  geometry = TRUE
+)
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+ ny_suffolk_black_population_unemployment_sf = get_acs(
+  geography = "tract",
+  county = "Suffolk",
+  variables = c("B02001_003","C18120_006"), # income variable
+  state = "NY",
+  year = 2023,
+  geometry = T
+)
+```
+
+
+
+```{r, messages=FALSE, warning=FALSE}
+mapview(
+  ny_suffolk_black_population_unemployment_sf, 
+  zcol ="estimate"
+)
+```
+
+
